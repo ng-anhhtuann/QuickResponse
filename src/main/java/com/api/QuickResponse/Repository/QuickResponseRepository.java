@@ -1,10 +1,8 @@
 package com.api.QuickResponse.Repository;
 
 import com.api.QuickResponse.Model.ItemLogin;
-import com.api.QuickResponse.Model.ReturnRegisterStatus.DataRegisterStatus;
-import com.api.QuickResponse.Model.ReturnRegisterStatus.ErrorRegister;
+import com.api.QuickResponse.Model.ReturnRegisterStatus.*;
 import com.api.QuickResponse.Model.Manufacturing.EncodeBase64ToString;
-import com.api.QuickResponse.Model.ReturnRegisterStatus.SuccessRegister;
 import com.api.QuickResponse.Model.Users;
 import com.api.QuickResponse.Model.ItemRegister;
 
@@ -41,7 +39,6 @@ public class QuickResponseRepository {
     public Object register(ItemRegister itemRegister) {
         Object toReturn;
         int countingSameUsername = 0;
-        int lengthOfList = listUsers.size();
         for (Users listUser : listUsers) {
             if (Objects.equals(itemRegister.getUserName(), listUser.getUserName())) {
                 countingSameUsername = 1;
@@ -72,6 +69,30 @@ public class QuickResponseRepository {
     }
 
     public Object login(ItemLogin itemLogin) {
-        
+        Object toReturn = null;
+        int countingSameUserName = 0;
+        for (Users listUser : listUsers) {
+            if (Objects.equals(itemLogin.getUserName(), listUser.getUserName())) {
+                countingSameUserName++;
+                if (Objects.equals(itemLogin.getPassword(), listUser.getPassword())) {
+                    toReturn = new SuccessLogin(
+                            true, new DataLoginStatus(
+                                    listUser.getUserName(),
+                                    listUser.getFullName(),
+                                    listUser.getAge(),
+                                    listUser.isGender(),
+                                    listUser.getId(),
+                                    listUser.getAccessToken()));
+                    break;
+                } else {
+                    toReturn = new ErrorLogin("Wrong Password", 100, false);
+                    break;
+                }
+            }
+        }
+        if (countingSameUserName == 0){
+            toReturn = new ErrorLogin("Unexisted Account", 150, false);
+        }
+        return toReturn;
     }
 }
