@@ -1,12 +1,15 @@
 package com.api.QuickResponse.Repository;
 
 import com.api.QuickResponse.Model.ItemLogin;
+import com.api.QuickResponse.Model.Manufacturing.JsonWebTokenToString;
 import com.api.QuickResponse.Model.ReturnRegisterStatus.*;
 import com.api.QuickResponse.Model.Manufacturing.EncodeBase64ToString;
 import com.api.QuickResponse.Model.Users;
 import com.api.QuickResponse.Model.ItemRegister;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,6 +39,7 @@ public class QuickResponseRepository {
 
     //REGISTER NEW USER
     public Object register(ItemRegister itemRegister) {
+        long currentMs = new Date().getTime();
         Object toReturn;
         int countingSameUsername = 0;
         for (Users listUser : listUsers) {
@@ -54,7 +58,7 @@ public class QuickResponseRepository {
                     itemRegister.getGender(),
                     itemRegister.getPassword(),
                     itemRegister.getId(),
-                    EncodeBase64ToString.base64Encode(itemRegister.getUserName()));
+                    JsonWebTokenToString.JWTAccessToken(itemRegister.toString()+currentMs));
             listUsers.add(temporatyUser);
             toReturn = new SuccessRegister(
                     true, 200, new DataRegisterStatus(
@@ -69,6 +73,7 @@ public class QuickResponseRepository {
 
     //LOGIN
     public Object login(ItemLogin itemLogin) {
+        long currentMs = new Date().getTime();
         Object toReturn = null;
         int countingSameUserName = 0;
         for (Users listUser : listUsers) {
@@ -82,7 +87,7 @@ public class QuickResponseRepository {
                             listUser.getAge(),
                             listUser.isGender(),
                             listUser.getId(),
-                            listUser.getAccessToken()));
+                            JsonWebTokenToString.JWTAccessToken(itemLogin.toString()+currentMs)));
                     break;
                 } else {
                     toReturn = new ErrorLogin("Wrong Password", 150, false);

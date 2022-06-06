@@ -1,6 +1,7 @@
 package com.api.QuickResponse.Model;
 
 import com.api.QuickResponse.Model.Manufacturing.EncodeBase64ToString;
+import com.api.QuickResponse.Model.Manufacturing.JsonWebTokenToString;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -25,7 +26,7 @@ public class Users {
     private String id;
     @SerializedName("accessToken")
     @Expose
-    private String accessToken;
+    private String accessToken ;
 
     @Override
     public String toString() {
@@ -85,7 +86,7 @@ public class Users {
     }
 
     public void setAccessToken(String accessToken) {
-        this.accessToken = EncodeBase64ToString.base64Encode(this.userName);
+        this.accessToken = accessToken;
     }
 
     public String getUserName() {
