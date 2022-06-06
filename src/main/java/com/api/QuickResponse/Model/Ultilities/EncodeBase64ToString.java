@@ -1,4 +1,4 @@
-package com.api.QuickResponse.Model.Manufacturing;
+package com.api.QuickResponse.Model.Ultilities;
 
 import java.util.Base64;
 

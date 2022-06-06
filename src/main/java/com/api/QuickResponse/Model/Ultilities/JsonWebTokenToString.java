@@ -1,4 +1,4 @@
-package com.api.QuickResponse.Model.Manufacturing;
+package com.api.QuickResponse.Model.Ultilities;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
