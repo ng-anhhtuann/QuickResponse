@@ -2,7 +2,7 @@ package com.api.QuickResponse.Model;
 
 import java.util.UUID;
 
-public class UserRegister {
+public class ItemRegister {
     public String userName;
     public String fullName;
     public int age;
@@ -46,7 +46,7 @@ public class UserRegister {
         this.age = age;
     }
 
-    public boolean isGender() {
+    public boolean getGender() {
         return gender;
     }
 
@@ -70,7 +70,7 @@ public class UserRegister {
         this.id = uuid.toString();
     }
 
-    public UserRegister(String userName, String fullName, int age, boolean gender, String password, String id) {
+    public ItemRegister(String userName, String fullName, int age, boolean gender, String password, String id) {
         this.userName = userName;
         this.fullName = fullName;
         this.age = age;

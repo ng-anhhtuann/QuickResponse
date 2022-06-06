@@ -1,11 +1,8 @@
-package com.api.QuickResponse.Model;
-
-import javax.annotation.Generated;
+package com.api.QuickResponse.Model.ReturnRegisterStatus;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Generated("jsonschema2pojo")
 public class ErrorRegister {
 
     @SerializedName("message")
@@ -42,4 +39,18 @@ public class ErrorRegister {
         this.success = success;
     }
 
+    public ErrorRegister(String message, Integer errorCode, Boolean success) {
+        this.message = message;
+        this.errorCode = errorCode;
+        this.success = success;
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "message='" + message + '\'' +
+                ", errorCode=" + errorCode +
+                ", success=" + success +
+                '}';
+    }
 }
