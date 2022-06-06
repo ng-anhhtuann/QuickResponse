@@ -1,13 +1,14 @@
 package com.api.QuickResponse.Repository;
 
-import com.api.QuickResponse.Model.ItemLogin;
-import com.api.QuickResponse.Model.Manufacturing.JsonWebTokenToString;
-import com.api.QuickResponse.Model.ReturnRegisterStatus.*;
-import com.api.QuickResponse.Model.Manufacturing.EncodeBase64ToString;
+import com.api.QuickResponse.Model.Login.ItemLogin;
+import com.api.QuickResponse.Model.Register.DataRegisterStatus;
+import com.api.QuickResponse.Model.Register.ErrorRegister;
+import com.api.QuickResponse.Model.Register.SuccessRegister;
+import com.api.QuickResponse.Model.Ultilities.JsonWebTokenToString;
+import com.api.QuickResponse.Model.Login.*;
 import com.api.QuickResponse.Model.Users;
-import com.api.QuickResponse.Model.ItemRegister;
+import com.api.QuickResponse.Model.Register.ItemRegister;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +59,7 @@ public class QuickResponseRepository {
                     itemRegister.getGender(),
                     itemRegister.getPassword(),
                     itemRegister.getId(),
-                    JsonWebTokenToString.JWTAccessToken(itemRegister.toString()+currentMs));
+                    JsonWebTokenToString.JWTAccessToken(itemRegister.toString() + currentMs));
             listUsers.add(temporatyUser);
             toReturn = new SuccessRegister(
                     true, 200, new DataRegisterStatus(
@@ -71,33 +72,48 @@ public class QuickResponseRepository {
         return toReturn;
     }
 
-    //LOGIN
+    /*
+    Login method
+     */
     public Object login(ItemLogin itemLogin) {
+        // Explanation: This method contains two steps to finalize everything abt this ticket ABC
+        // First, we have to generate jwt token for user and save to that user
+
+        // Second, we pick user info up from list and return
         long currentMs = new Date().getTime();
         Object toReturn = null;
-        int countingSameUserName = 0;
+        // Find whether user logged in is duplicated or not
+        Users usersFound = null;
+        int userIndex = -1;
         for (Users listUser : listUsers) {
+            userIndex++;
             if (Objects.equals(itemLogin.getUserName(), listUser.getUserName())) {
-                countingSameUserName++;
                 if (Objects.equals(itemLogin.getPassword(), listUser.getPassword())) {
-                    toReturn = new SuccessLogin(
-                            true, new DataLoginStatus(
-                            listUser.getUserName(),
-                            listUser.getFullName(),
-                            listUser.getAge(),
-                            listUser.isGender(),
-                            listUser.getId(),
-                            JsonWebTokenToString.JWTAccessToken(itemLogin.toString()+currentMs)));
+                    usersFound = listUser;
                     break;
                 } else {
-                    toReturn = new ErrorLogin("Wrong Password", 150, false);
-                    break;
+                    return new ErrorLogin("Wrong Password", 150, false);
                 }
             }
         }
-        if (countingSameUserName == 0) {
-            toReturn = new ErrorLogin("Unexisted Account", 150, false);
+        if (usersFound != null) {
+            // Generate accessToken and set to user
+            // Finally we have to pick it up
+            String accessToken = JsonWebTokenToString.JWTAccessToken(itemLogin.toString() + currentMs);
+            Users temp = listUsers.get(userIndex);
+            temp.setAccessToken(accessToken);
+            listUsers.set(userIndex, temp);
+            // Return success login status
+            return new SuccessLogin(
+                    true, new DataLoginStatus(
+                    usersFound.getUserName(),
+                    usersFound.getFullName(),
+                    usersFound.getAge(),
+                    usersFound.isGender(),
+                    usersFound.getId(),
+                    usersFound.getAccessToken()));
+        } else {
+            return new ErrorLogin("Unexisted Account", 150, false);
         }
-        return toReturn;
     }
 }

@@ -1,4 +1,4 @@
-package com.api.QuickResponse.Model.ReturnRegisterStatus;
+package com.api.QuickResponse.Model.Login;
 
 public class SuccessLogin {
     public boolean success;

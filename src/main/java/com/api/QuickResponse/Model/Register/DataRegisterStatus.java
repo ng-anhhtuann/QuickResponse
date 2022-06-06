@@ -1,32 +1,29 @@
-package com.api.QuickResponse.Model.ReturnRegisterStatus;
+package com.api.QuickResponse.Model.Register;
 
-public class DataLoginStatus {
+public class DataRegisterStatus {
     public String userName;
     public String fullName;
     public int age;
     public boolean gender;
     public String id;
-    public String accessToken;
-
-    public DataLoginStatus(String userName, String fullName, int age, boolean gender, String id, String accessToken) {
-        this.userName = userName;
-        this.fullName = fullName;
-        this.age = age;
-        this.gender = gender;
-        this.id = id;
-        this.accessToken = accessToken;
-    }
 
     @Override
     public String toString() {
-        return "DataLoginStatus{" +
+        return "DataRegisterStatus{" +
                 "userName='" + userName + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
                 ", id='" + id + '\'' +
-                ", accessToken='" + accessToken + '\'' +
                 '}';
+    }
+
+    public DataRegisterStatus(String userName, String fullName, int age, boolean gender, String id) {
+        this.userName = userName;
+        this.fullName = fullName;
+        this.age = age;
+        this.gender = gender;
+        this.id = id;
     }
 
     public String getUserName() {
@@ -67,13 +64,5 @@ public class DataLoginStatus {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
     }
 }

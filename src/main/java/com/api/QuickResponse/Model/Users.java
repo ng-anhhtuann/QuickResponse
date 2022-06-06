@@ -1,7 +1,5 @@
 package com.api.QuickResponse.Model;
 
-import com.api.QuickResponse.Model.Manufacturing.EncodeBase64ToString;
-import com.api.QuickResponse.Model.Manufacturing.JsonWebTokenToString;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

@@ -1,6 +1,6 @@
 package com.api.QuickResponse.Controllers;
 
-import com.api.QuickResponse.Model.ItemRegister;
+import com.api.QuickResponse.Model.Register.ItemRegister;
 import com.api.QuickResponse.Repository.QuickResponseRepository;
 import org.springframework.web.bind.annotation.*;
 
