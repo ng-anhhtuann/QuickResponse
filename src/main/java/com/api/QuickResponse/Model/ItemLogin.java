@@ -1,14 +1,19 @@
 package com.api.QuickResponse.Model;
 
-public class ItemLogin {
-    public String userName;
-    public String password;
-    public String accessToken;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    public ItemLogin(String userName, String password, String accessToken) {
+public class ItemLogin {
+    @SerializedName("userName")
+    @Expose
+    private String userName;
+    @SerializedName("password")
+    @Expose
+    private String password;
+
+    public ItemLogin(String userName, String password) {
         this.userName = userName;
         this.password = password;
-        this.accessToken = accessToken;
     }
 
     @Override
@@ -16,7 +21,6 @@ public class ItemLogin {
         return "ItemLogin{" +
                 "userName='" + userName + '\'' +
                 ", password='" + password + '\'' +
-                ", accessToken='" + accessToken + '\'' +
                 '}';
     }
 
@@ -36,11 +40,4 @@ public class ItemLogin {
         this.password = password;
     }
 
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
 }

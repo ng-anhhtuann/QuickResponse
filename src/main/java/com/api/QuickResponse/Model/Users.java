@@ -1,15 +1,31 @@
 package com.api.QuickResponse.Model;
 
 import com.api.QuickResponse.Model.Manufacturing.EncodeBase64ToString;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Users {
-    public String userName;
-    public String fullName;
-    public int age;
-    public boolean gender;
-    public String password;
-    public String id;
-    public String accessToken;
+    @SerializedName("userName")
+    @Expose
+    private String userName;
+    @SerializedName("fullName")
+    @Expose
+    private String fullName;
+    @SerializedName("age")
+    @Expose
+    private int age;
+    @SerializedName("gender")
+    @Expose
+    private boolean gender;
+    @SerializedName("password")
+    @Expose
+    private String password;
+    @SerializedName("id")
+    @Expose
+    private String id;
+    @SerializedName("accessToken")
+    @Expose
+    private String accessToken;
 
     @Override
     public String toString() {

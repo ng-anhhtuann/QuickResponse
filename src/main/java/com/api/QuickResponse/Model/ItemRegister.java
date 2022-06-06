@@ -1,24 +1,39 @@
 package com.api.QuickResponse.Model;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 import java.util.UUID;
 
 public class ItemRegister {
-    public String userName;
-    public String fullName;
-    public int age;
-    public boolean gender;
-    public String password;
-    public String id;
-    public UUID uuid = UUID.randomUUID();
+    @SerializedName("userName")
+    @Expose
+    private String userName;
+    @SerializedName("fullName")
+    @Expose
+    private String fullName;
+    @SerializedName("age")
+    @Expose
+    private Integer age;
+    @SerializedName("gender")
+    @Expose
+    private Boolean gender;
+    @SerializedName("password")
+    @Expose
+    private String password;
+    @SerializedName("id")
+    @Expose
+    private String id;
 
     @Override
     public String toString() {
-        return "Registered{" +
+        return "ItemRegister{" +
                 "userName='" + userName + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
                 ", password='" + password + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
 
@@ -38,19 +53,19 @@ public class ItemRegister {
         this.fullName = fullName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public boolean getGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
@@ -63,19 +78,15 @@ public class ItemRegister {
     }
 
     public String getId() {
-        return uuid.toString();
+        return id;
     }
 
-    public void setId(String id) {
-        this.id = uuid.toString();
-    }
-
-    public ItemRegister(String userName, String fullName, int age, boolean gender, String password, String id) {
+    public ItemRegister(String userName, String fullName, Integer age, Boolean gender, String password, String id) {
         this.userName = userName;
         this.fullName = fullName;
         this.age = age;
         this.gender = gender;
         this.password = password;
-        this.id = id;
+        this.id = String.valueOf(UUID.randomUUID());
     }
 }

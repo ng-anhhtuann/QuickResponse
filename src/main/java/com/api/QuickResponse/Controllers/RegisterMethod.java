@@ -2,17 +2,14 @@ package com.api.QuickResponse.Controllers;
 
 import com.api.QuickResponse.Model.ItemRegister;
 import com.api.QuickResponse.Repository.QuickResponseRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/register")
 public class RegisterMethod {
     @PostMapping
-    public Object register(ItemRegister itemRegister){
-        QuickResponseRepository quickResponseRepository = new QuickResponseRepository();
+    public Object register(@RequestBody ItemRegister itemRegister) {
+        QuickResponseRepository quickResponseRepository = QuickResponseRepository.getQuickResponseRepository();
         return quickResponseRepository.register(itemRegister);
     }
 }

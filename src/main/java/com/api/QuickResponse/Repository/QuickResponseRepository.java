@@ -13,8 +13,6 @@ import java.util.Objects;
 public class QuickResponseRepository {
     public static List<Users> listUsers;        //List users existed on system
 
-    public QuickResponseRepository() {
-    }
 
     public static QuickResponseRepository quickResponseRepository;
 
@@ -36,6 +34,7 @@ public class QuickResponseRepository {
         return listUsers;
     }
 
+    //REGISTER NEW USER
     public Object register(ItemRegister itemRegister) {
         Object toReturn;
         int countingSameUsername = 0;
@@ -68,6 +67,7 @@ public class QuickResponseRepository {
         return toReturn;
     }
 
+    //LOGIN
     public Object login(ItemLogin itemLogin) {
         Object toReturn = null;
         int countingSameUserName = 0;
@@ -77,20 +77,20 @@ public class QuickResponseRepository {
                 if (Objects.equals(itemLogin.getPassword(), listUser.getPassword())) {
                     toReturn = new SuccessLogin(
                             true, new DataLoginStatus(
-                                    listUser.getUserName(),
-                                    listUser.getFullName(),
-                                    listUser.getAge(),
-                                    listUser.isGender(),
-                                    listUser.getId(),
-                                    listUser.getAccessToken()));
+                            listUser.getUserName(),
+                            listUser.getFullName(),
+                            listUser.getAge(),
+                            listUser.isGender(),
+                            listUser.getId(),
+                            listUser.getAccessToken()));
                     break;
                 } else {
-                    toReturn = new ErrorLogin("Wrong Password", 100, false);
+                    toReturn = new ErrorLogin("Wrong Password", 150, false);
                     break;
                 }
             }
         }
-        if (countingSameUserName == 0){
+        if (countingSameUserName == 0) {
             toReturn = new ErrorLogin("Unexisted Account", 150, false);
         }
         return toReturn;
