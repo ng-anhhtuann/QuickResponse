@@ -21,8 +21,6 @@ import java.util.Objects;
 
 public class QuickResponseRepository {
     public static List<User> listUsers;
-
-
     public static QuickResponseRepository quickResponseRepository;
 
     //SINGLETON
@@ -122,11 +120,39 @@ public class QuickResponseRepository {
         }
     }
 
+    /*
+    Search 20 youtube videos by keyword input
+     */
     public Object searchByKeyword(String query) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://youtube-search6.p.rapidapi.com/search/?query=" + query))
                 .header("X-RapidAPI-Host", "youtube-search6.p.rapidapi.com")
+                .header("X-RapidAPI-Key", "c59b4901edmsh8e650272a17c640p171602jsn243dea0b5ad4")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
+    /*
+    Return list of 20 trending videos
+     */
+    public Object trendingVideos() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://youtube-search6.p.rapidapi.com/trending?country=US&lang=en"))
+                .header("X-RapidAPI-Host", "youtube-search6.p.rapidapi.com")
+                .header("X-RapidAPI-Key", "c59b4901edmsh8e650272a17c640p171602jsn243dea0b5ad4")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
+
+    public Object continuableVideo() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://youtube-search6.p.rapidapi.com/video/recommendation/continuation/?videoId=sVF_SlzxBJ4&continuationToken=CBQSKRILc1ZGX1NsenhCSjTAAQDIAQDgAQGiAg0o____________AUAA-AIAGAAqmwMI4p64qar6ncwdCJnKz6OLgLm4JAj49f2F1o_U6swBCPXHwfaSybHGQgiqtLXfs_W6thMI7Ync68rUsqziAQi045DznPbn7egBCLfT1vT_voC8wgEIyLby7NLUrO3uAQiliPG_5Kej2lgIk_qG093k85v5AQiz9cL9xLOb1nMI5Zyax5W3pfHfAQjWppG9oN3ivVkIxpKI6_edt75SCP7Qv67Pjpnb-gEItYDj_by_5IorCOns-5P5xsj-sgEIxpGhiYj0nNpTCN6Alr-9m866kAEaxgEKC2tIVTQyOWZsZ0Y0GrYBCgtrSFU0MjlmbGdGNBIBMBoLCPXl7IsGELjxnz8iBgjTkfWNBioECA0QAjJZCgQIZBABCgQIaRAPCgUImAEQAQoFCNwBEAcKBQiQAxABCgUIhgcQFgoFCMAHEAEKBQjFBxABCgUIxgcQAQoFCMcHEAEKBQjIBxABCgUIyQcQAQoFCMoHEAE6EwoCCHAKAwjnAgoDCKgDCgMImQhCBwoDCM0BEAJKBwoDCM0BEAJSBwoDCM0BEAJqD3dhdGNoLW5leHQtZmVlZA%253D%253D"))
                 .header("X-RapidAPI-Key", "87f975e4b1msh141920b7d1554f2p15bdd9jsnc10b3cbf8d55")
+                .header("X-RapidAPI-Host", "youtube-search6.p.rapidapi.com")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
                 .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
