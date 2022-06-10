@@ -3,7 +3,7 @@ package com.api.QuickResponse.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Users {
+public class User {
     @SerializedName("userName")
     @Expose
     private String userName;
@@ -24,7 +24,7 @@ public class Users {
     private String id;
     @SerializedName("accessToken")
     @Expose
-    private String accessToken ;
+    private String accessToken;
 
     @Override
     public String toString() {
@@ -95,7 +95,7 @@ public class Users {
         this.userName = userName;
     }
 
-    public Users(String userName, String fullName, int age, boolean gender, String password, String id, String accessToken) {
+    public User(String userName, String fullName, int age, boolean gender, String password, String id, String accessToken) {
         this.userName = userName;
         this.fullName = fullName;
         this.age = age;
