@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "trending")
-public class TrendingVideos {
+@RequestMapping(value = "gettrending")
+public class GetTrendingVideos {
     @GetMapping
     public Object trendingVideos() throws IOException, InterruptedException {
         QuickResponseRepository quickResponseRepository = new QuickResponseRepository();
-        return quickResponseRepository.trendingVideos();
+        return quickResponseRepository.getTrendingVideos();
     }
 }
