@@ -1,7 +1,7 @@
 package com.api.QuickResponse.Model.Register;
 
 public class SuccessRegister {
-    public  boolean success;
+    public boolean success;
     public int errorCode;
     public DataRegisterStatus info;
 

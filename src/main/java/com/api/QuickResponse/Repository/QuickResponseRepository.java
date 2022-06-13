@@ -4,10 +4,12 @@ import com.api.QuickResponse.Model.Login.ItemLogin;
 import com.api.QuickResponse.Model.Register.DataRegisterStatus;
 import com.api.QuickResponse.Model.Register.ErrorRegister;
 import com.api.QuickResponse.Model.Register.SuccessRegister;
+import com.api.QuickResponse.Model.YoutubeModel.VideoObject;
 import com.api.QuickResponse.Ultilities.JsonWebTokenToString;
 import com.api.QuickResponse.Model.Login.*;
 import com.api.QuickResponse.Model.User;
 import com.api.QuickResponse.Model.Register.ItemRegister;
+import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.net.URI;
@@ -192,5 +194,23 @@ public class QuickResponseRepository {
         return response.body();
     }
 
+    /*
+    get videoDetails from videoId
+    fetch Json result to Object name VideoObject to get channelId
+    through it, get channelDetails
+     */
+    public Object getChannelDetails(String id) throws IOException, InterruptedException {
+        Gson gson = new Gson();
+        VideoObject videoObject = gson.fromJson((String) getDetails(id), VideoObject.class);
+        String channelId = videoObject.getChannelId();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://youtube-search6.p.rapidapi.com/channel/details/?channelId=" + channelId))
+                .header("X-RapidAPI-Key", "87f975e4b1msh141920b7d1554f2p15bdd9jsnc10b3cbf8d55")
+                .header("X-RapidAPI-Host", "youtube-search6.p.rapidapi.com")
+                .method("GET", HttpRequest.BodyPublishers.noBody())
+                .build();
+        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+        return response.body();
+    }
 
 }
