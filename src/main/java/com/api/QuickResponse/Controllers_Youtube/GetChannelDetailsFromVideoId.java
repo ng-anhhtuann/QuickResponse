@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "getcomments", params = {"videoId"})
-public class GetCommentsById {
+@RequestMapping(value = "getchanneldetails", params = {"videoId"})
+public class GetChannelDetailsFromVideoId {
     @GetMapping
-    public Object getCmtById(@RequestParam(value = "videoId") String id) throws IOException, InterruptedException {
+    public Object getChannelDetails(@RequestParam(value = "videoId") String videoId) throws IOException, InterruptedException {
         QuickResponseRepository quickResponseRepository = new QuickResponseRepository();
-        return quickResponseRepository.getComments(id);
+        return quickResponseRepository.getChannelDetails(videoId);
     }
 }

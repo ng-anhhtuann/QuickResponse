@@ -7,12 +7,12 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import java.io.UnsupportedEncodingException;
 
 public class JsonWebTokenToString {
-    public static String JWTAccessToken(String userName){
+    public static String JWTAccessToken(String userName) {
         String toReturn = null;
-        try{
+        try {
             Algorithm algorithm = Algorithm.HMAC256(userName);
             toReturn = JWT.create().sign(algorithm);
-        } catch (JWTCreationException | UnsupportedEncodingException e){
+        } catch (JWTCreationException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return toReturn;

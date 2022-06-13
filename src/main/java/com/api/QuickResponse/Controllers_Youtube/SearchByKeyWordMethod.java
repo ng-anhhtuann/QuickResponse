@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping(value = "/search", params = {"query"})
+@RequestMapping(value = "search", params = {"query"})
 public class SearchByKeyWordMethod {
     @GetMapping
     private Object searchMachine(@RequestParam(value = "query") String query) throws IOException, InterruptedException {
