@@ -55,6 +55,9 @@ public class QuickResponseRepository {
         /*
         Date & Time Register Account
          */
+        if (itemRegister==null){
+            return new ErrorRegister("Required informations for Registering", 999, false);
+        }
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String currentDt = simpleDateFormat.format(date);
@@ -89,15 +92,15 @@ public class QuickResponseRepository {
                         itemRegister.getId(),
                         JsonWebTokenToString.JWTAccessToken(itemRegister.toString() + currentMs),
                         currentDt);
-
-                insertStatement.setString(1, newUser.getId());
-                insertStatement.setString(2, newUser.getFullName());
-                insertStatement.setString(3, newUser.getUserName());
-                insertStatement.setString(4, newUser.getPassword());
-                insertStatement.setBoolean(5, newUser.isGender());
-                insertStatement.setString(6, newUser.getAccessToken());
-                insertStatement.setInt(7, newUser.getAge());
-                insertStatement.setString(8, newUser.getTimeRegister());
+                int row = 0;
+                insertStatement.setString(row++, newUser.getId());
+                insertStatement.setString(row++, newUser.getFullName());
+                insertStatement.setString(row++, newUser.getUserName());
+                insertStatement.setString(row++, newUser.getPassword());
+                insertStatement.setBoolean(row++, newUser.isGender());
+                insertStatement.setString(row++, newUser.getAccessToken());
+                insertStatement.setInt(row++, newUser.getAge());
+                insertStatement.setString(row++, newUser.getTimeRegister());
 
                 insertStatement.execute();
 
@@ -109,8 +112,10 @@ public class QuickResponseRepository {
                         itemRegister.getGender(),
                         itemRegister.getId()));
             } catch (SQLException e) {
+                toReturn = new ErrorRegister(e.getMessage(), 100, false);
                 System.out.println(e.getMessage());
             } catch (Exception e) {
+                toReturn = new ErrorRegister(e.getMessage(), 100, false);
                 e.printStackTrace();
             }
         }
