@@ -55,7 +55,7 @@ public class QuickResponseRepository {
         /*
         Date & Time Register Account
          */
-        if (itemRegister==null){
+        if (itemRegister == null) {
             return new ErrorRegister("Required informations for Registering", 999, false);
         }
         Date date = new Date();
@@ -112,10 +112,10 @@ public class QuickResponseRepository {
                         itemRegister.getGender(),
                         itemRegister.getId()));
             } catch (SQLException e) {
-                toReturn = new ErrorRegister(e.getMessage(), 100, false);
+                toReturn = new ErrorRegister(e.getMessage(), 500, false);
                 System.out.println(e.getMessage());
             } catch (Exception e) {
-                toReturn = new ErrorRegister(e.getMessage(), 100, false);
+                toReturn = new ErrorRegister(e.getMessage(), 500, false);
                 e.printStackTrace();
             }
         }
