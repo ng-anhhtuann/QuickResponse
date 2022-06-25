@@ -21,9 +21,6 @@ public class ItemRegister {
     @SerializedName("password")
     @Expose
     private String password;
-    @SerializedName("id")
-    @Expose
-    private String id;
 
     @Override
     public String toString() {
@@ -33,7 +30,6 @@ public class ItemRegister {
                 ", age=" + age +
                 ", gender=" + gender +
                 ", password='" + password + '\'' +
-                ", id='" + id + '\'' +
                 '}';
     }
 
@@ -77,16 +73,11 @@ public class ItemRegister {
         this.password = password;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public ItemRegister(String userName, String fullName, Integer age, Boolean gender, String password, String id) {
+    public ItemRegister(String userName, String fullName, Integer age, Boolean gender, String password) {
         this.userName = userName;
         this.fullName = fullName;
         this.age = age;
         this.gender = gender;
         this.password = password;
-        this.id = String.valueOf(UUID.randomUUID());
     }
 }

@@ -3,9 +3,8 @@ package com.api.QuickResponse.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import javax.persistence.Entity;
+import java.util.UUID;
 
-//@Entity
 public class User {
     @SerializedName("userName")
     @Expose
@@ -121,16 +120,14 @@ public class User {
         this.userName = userName;
     }
 
-    public User(String userName, String fullName, int age, boolean gender, String password, String id, String accessToken, String timeRegister) {
+    public User(String userName, String fullName, int age, boolean gender, String password, String accessToken, String timeRegister) {
         this.userName = userName;
         this.fullName = fullName;
         this.age = age;
         this.gender = gender;
         this.password = password;
-        this.id = id;
+        this.id = String.valueOf(UUID.randomUUID());
         this.accessToken = accessToken;
         this.timeRegister = timeRegister;
     }
-
-
 }
