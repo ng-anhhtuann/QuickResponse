@@ -3,6 +3,9 @@ package com.api.QuickResponse.Model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import javax.persistence.Entity;
+
+//@Entity
 public class User {
     @SerializedName("userName")
     @Expose
@@ -25,6 +28,29 @@ public class User {
     @SerializedName("accessToken")
     @Expose
     private String accessToken;
+    @SerializedName("accessToken")
+    @Expose
+    private String timeLogin;
+
+    public String getTimeLogin() {
+        return timeLogin;
+    }
+
+    public void setTimeLogin(String timeLogin) {
+        this.timeLogin = timeLogin;
+    }
+
+    public String getTimeRegister() {
+        return timeRegister;
+    }
+
+    public void setTimeRegister(String timeRegister) {
+        this.timeRegister = timeRegister;
+    }
+
+    @SerializedName("accessToken")
+    @Expose
+    private String timeRegister;
 
     @Override
     public String toString() {
@@ -95,7 +121,7 @@ public class User {
         this.userName = userName;
     }
 
-    public User(String userName, String fullName, int age, boolean gender, String password, String id, String accessToken) {
+    public User(String userName, String fullName, int age, boolean gender, String password, String id, String accessToken, String timeRegister) {
         this.userName = userName;
         this.fullName = fullName;
         this.age = age;
@@ -103,5 +129,8 @@ public class User {
         this.password = password;
         this.id = id;
         this.accessToken = accessToken;
+        this.timeRegister = timeRegister;
     }
+
+
 }
