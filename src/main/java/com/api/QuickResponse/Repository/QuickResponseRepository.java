@@ -10,7 +10,6 @@ import com.api.QuickResponse.Model.Login.*;
 import com.api.QuickResponse.Model.User;
 import com.api.QuickResponse.Model.Register.ItemRegister;
 import com.google.gson.Gson;
-import org.hibernate.engine.jdbc.connections.internal.DriverConnectionCreator;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,7 +18,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.sql.*;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,14 +27,12 @@ public class QuickResponseRepository {
     private static final String url = "jdbc:mysql://localhost:3306/QuickResponse";
     private static final String username = "root";
     private static final String password = "0944988947t";
-    public static List<User> listUsers;
     public static QuickResponseRepository quickResponseRepository;
 
     //SINGLETON
     public static QuickResponseRepository getQuickResponseRepository() {
         if (quickResponseRepository == null) {
             quickResponseRepository = new QuickResponseRepository();
-            listUsers = new ArrayList<>();
         }
         return quickResponseRepository;
     }
@@ -47,7 +43,27 @@ public class QuickResponseRepository {
 
     //GET LIST ALL USERS EXISTED
     public List<User> getall() {
-        return listUsers;
+        String queryAll = "SELECT * FROM QuickResponse.User;";
+        ArrayList<User> listUser = new ArrayList<>();
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            PreparedStatement preparedStatement = connection.prepareStatement(queryAll);
+            ResultSet resultSet = preparedStatement.executeQuery(queryAll);
+            while (resultSet.next()) {
+                User newUser = new User(resultSet.getString("userName")
+                        , resultSet.getString("fullName")
+                        , resultSet.getInt("age")
+                        , resultSet.getBoolean("gender")
+                        , resultSet.getString("password")
+                        , resultSet.getString("id")
+                        , resultSet.getString("accessToken")
+                        , resultSet.getString("timeRegister"));
+                listUser.add(newUser);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return listUser;
     }
 
     //REGISTER NEW USER
@@ -56,7 +72,7 @@ public class QuickResponseRepository {
         Date & Time Register Account
          */
         if (itemRegister == null) {
-            return new ErrorRegister("Required informations for Registering", 999, false);
+            return new ErrorRegister("Required information for Registering", 999, false);
         }
         Date date = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -76,8 +92,7 @@ public class QuickResponseRepository {
         Connection connection = DriverManager.getConnection(url, username, password);
         PreparedStatement checkStatement = connection.prepareStatement(checkDB);
         ResultSet resultSet = checkStatement.executeQuery(checkDB);
-
-
+//System.out.println(itemRegister.toString());
         if (resultSet.next()) {
             toReturn = new ErrorRegister("Duplicated username", 100, false);
         } else {
@@ -92,15 +107,16 @@ public class QuickResponseRepository {
                         itemRegister.getId(),
                         JsonWebTokenToString.JWTAccessToken(itemRegister.toString() + currentMs),
                         currentDt);
-                int row = 0;
-                insertStatement.setString(row++, newUser.getId());
-                insertStatement.setString(row++, newUser.getFullName());
-                insertStatement.setString(row++, newUser.getUserName());
-                insertStatement.setString(row++, newUser.getPassword());
-                insertStatement.setBoolean(row++, newUser.isGender());
-                insertStatement.setString(row++, newUser.getAccessToken());
-                insertStatement.setInt(row++, newUser.getAge());
-                insertStatement.setString(row++, newUser.getTimeRegister());
+//System.out.println(newUser.toString());
+
+                insertStatement.setString(1, newUser.getId());
+                insertStatement.setString(2, newUser.getFullName());
+                insertStatement.setString(3, newUser.getUserName());
+                insertStatement.setString(4, newUser.getPassword());
+                insertStatement.setBoolean(5, newUser.isGender());
+                insertStatement.setString(6, newUser.getAccessToken());
+                insertStatement.setInt(7, newUser.getAge());
+                insertStatement.setString(8, newUser.getTimeRegister());
 
                 insertStatement.execute();
 
@@ -125,45 +141,81 @@ public class QuickResponseRepository {
     /*
     Login method
      */
-    public Object login(ItemLogin itemLogin) {
-        // Explanation: This method contains two steps to finalize everything abt this ticket ABC
-        // First, we have to generate jwt token for user and save to that user
-        // Second, we pick user info up from list and return
-        long currentMs = new Date().getTime();
+    public Object login(ItemLogin itemLogin) throws SQLException {
         Object toReturn = null;
-        // Find whether user logged in is duplicated or not
-        User userFound = null;
-        int userIndex = -1;
-        for (User listUser : listUsers) {
-            userIndex++;
-            if (Objects.equals(itemLogin.getUserName(), listUser.getUserName())) {
-                if (Objects.equals(itemLogin.getPassword(), listUser.getPassword())) {
-                    userFound = listUser;
-                    break;
-                } else {
-                    return new ErrorLogin("Wrong Password", 150, false);
-                }
+        if (itemLogin == null) {
+            return new ErrorLogin("Please fill in with username and password", 400, false);
+        }
+        /*
+         Explanation: This method contains two steps to finalize everything abt this ticket ABC
+         First, we have to generate jwt token for user and save to that user
+         Second, we pick user info up from list and return
+         */
+        long currentMs = new Date().getTime();
+
+        /*
+        Date and time at the latest login
+         */
+        Date date = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currentDt = simpleDateFormat.format(date);
+        /*
+        Login query check whether user and password are match
+         */
+        try {
+            String loginQuery = "SELECT * FROM QuickResponse.User " +
+                    "WHERE userName ='" + itemLogin.getUserName() + "' AND password ='" + itemLogin.getPassword() + "';";
+            Connection connection = DriverManager.getConnection(url, username, password);
+            PreparedStatement loginStatement = connection.prepareStatement(loginQuery);
+            ResultSet resultLogin = loginStatement.executeQuery(loginQuery);
+        /*
+        Update timeLastLogin and accessToken each time login into account
+         */
+            String updateQuery = "UPDATE QuickResponse.User" +
+                    " SET timeLastLogin = ?, accessToken = ? " +
+                    "WHERE userName ='" + itemLogin.getUserName() + "' AND password ='" + itemLogin.getPassword() + "';";
+            PreparedStatement updateStatement = connection.prepareStatement(updateQuery);
+        /*
+        Check if the query has result in resultset notnull
+        This means the username and password matches with the existed account in database
+         */
+            if (resultLogin.next()) {
+                String id = resultLogin.getString(1);
+                String fullName = resultLogin.getString(2);
+                String userName = resultLogin.getString(3);
+                String password = resultLogin.getString(4);
+                boolean gender = resultLogin.getBoolean(5);
+                String accessToken = resultLogin.getString(6);
+                int age = resultLogin.getInt(7);
+                String timeRegister = resultLogin.getString(8);
+
+                loginStatement.execute();
+            /*
+            Create new temporary User with the information from database taken
+            And set realtime login to it
+             */
+                User newUser = new User(userName, fullName, age, gender, password, id, accessToken, timeRegister);
+                newUser.setTimeLogin(currentDt);
+
+            /*
+            Update latest time login into the account vs accessToken
+             */
+                updateStatement.setString(1, currentDt);
+
+                String tempaccessToken = JsonWebTokenToString.JWTAccessToken(itemLogin.toString() + currentMs);
+                updateStatement.setString(2, tempaccessToken);
+
+                updateStatement.executeUpdate();
+
+                toReturn = new SuccessLogin(true, new DataLoginStatus(userName, fullName, age, gender, id, accessToken));
+            } else {
+                toReturn = new ErrorLogin("Wrong username or password", 455, false);
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            toReturn = new ErrorLogin(e.getMessage(), 404, false);
         }
-        if (userFound != null) {
-            // Generate accessToken and set to user
-            // Finally we have to pick it up
-            String accessToken = JsonWebTokenToString.JWTAccessToken(itemLogin.toString() + currentMs);
-            User temp = listUsers.get(userIndex);
-            temp.setAccessToken(accessToken);
-            listUsers.set(userIndex, temp);
-            // Return success login status
-            return new SuccessLogin(
-                    true, new DataLoginStatus(
-                    userFound.getUserName(),
-                    userFound.getFullName(),
-                    userFound.getAge(),
-                    userFound.isGender(),
-                    userFound.getId(),
-                    userFound.getAccessToken()));
-        } else {
-            return new ErrorLogin("Unexisted Account", 150, false);
-        }
+        return toReturn;
     }
 
     /*
