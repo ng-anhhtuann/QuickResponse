@@ -1,10 +1,11 @@
-package com.api.QuickResponse.Model;
+package com.api.QuickResponse.Model.Register;
 
-import com.api.QuickResponse.Model.Manufacturing.EncodeBase64ToString;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Users {
+import java.util.UUID;
+
+public class ItemRegister {
     @SerializedName("userName")
     @Expose
     private String userName;
@@ -13,31 +14,35 @@ public class Users {
     private String fullName;
     @SerializedName("age")
     @Expose
-    private int age;
+    private Integer age;
     @SerializedName("gender")
     @Expose
-    private boolean gender;
+    private Boolean gender;
     @SerializedName("password")
     @Expose
     private String password;
     @SerializedName("id")
     @Expose
     private String id;
-    @SerializedName("accessToken")
-    @Expose
-    private String accessToken;
 
     @Override
     public String toString() {
-        return "Users{" +
+        return "ItemRegister{" +
                 "userName='" + userName + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", age=" + age +
                 ", gender=" + gender +
                 ", password='" + password + '\'' +
                 ", id='" + id + '\'' +
-                ", accessToken='" + accessToken + '\'' +
                 '}';
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getFullName() {
@@ -48,19 +53,19 @@ public class Users {
         this.fullName = fullName;
     }
 
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Integer age) {
         this.age = age;
     }
 
-    public boolean isGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
@@ -76,33 +81,12 @@ public class Users {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getAccessToken() {
-        return accessToken;
-    }
-
-    public void setAccessToken(String accessToken) {
-        this.accessToken = EncodeBase64ToString.base64Encode(this.userName);
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public Users(String userName, String fullName, int age, boolean gender, String password, String id, String accessToken) {
+    public ItemRegister(String userName, String fullName, Integer age, Boolean gender, String password, String id) {
         this.userName = userName;
         this.fullName = fullName;
         this.age = age;
         this.gender = gender;
         this.password = password;
-        this.id = id;
-        this.accessToken = accessToken;
+        this.id = String.valueOf(UUID.randomUUID());
     }
 }

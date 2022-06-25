@@ -1,4 +1,4 @@
-package com.api.QuickResponse.Model.ReturnRegisterStatus;
+package com.api.QuickResponse.Model.Register;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
