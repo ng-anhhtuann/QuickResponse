@@ -55,7 +55,6 @@ public class QuickResponseRepository {
                         , resultSet.getInt("age")
                         , resultSet.getBoolean("gender")
                         , resultSet.getString("password")
-                        , resultSet.getString("id")
                         , resultSet.getString("accessToken")
                         , resultSet.getString("timeRegister"));
                 listUser.add(newUser);
@@ -104,7 +103,6 @@ public class QuickResponseRepository {
                         itemRegister.getAge(),
                         itemRegister.getGender(),
                         itemRegister.getPassword(),
-                        itemRegister.getId(),
                         JsonWebTokenToString.JWTAccessToken(itemRegister.toString() + currentMs),
                         currentDt);
 //System.out.println(newUser.toString());
@@ -126,7 +124,7 @@ public class QuickResponseRepository {
                         itemRegister.getFullName(),
                         itemRegister.getAge(),
                         itemRegister.getGender(),
-                        itemRegister.getId()));
+                        newUser.getId()));
             } catch (SQLException e) {
                 toReturn = new ErrorRegister(e.getMessage(), 500, false);
                 System.out.println(e.getMessage());
@@ -194,7 +192,7 @@ public class QuickResponseRepository {
             Create new temporary User with the information from database taken
             And set realtime login to it
              */
-                User newUser = new User(userName, fullName, age, gender, password, id, accessToken, timeRegister);
+                User newUser = new User(userName, fullName, age, gender, password, accessToken, timeRegister);
                 newUser.setTimeLogin(currentDt);
 
             /*
